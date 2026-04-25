@@ -38,15 +38,15 @@ export async function createItemHandler(data: any) {
   try {
     
     // Add validation using Zod
-    const validatedData = ExamItemSchema.parse(data);
-    if (!validatedData) {
+    const validatedData = ExamItemSchema.safeParse(data); // This returns the CreateItemRequest object schema
+    if (!validatedData.success) {
       return {
         statusCode: 400,
-        body: { error: 'Invalid item data' },
+        body: { error: 'Invalid item data' }, // TODO find a way to show exactly what is causing the error https://zod.dev/error-customization
       };
     }
 
-    const item = await storage.createItem(validatedData);
+    const item = await storage.createItem(validatedData.data);
 
     return {
       statusCode: 201,
