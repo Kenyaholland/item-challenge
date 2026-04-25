@@ -6,7 +6,7 @@
  */
 
 import { randomUUID } from 'crypto';
-import { ExamItem, CreateItemRequest, UpdateItemRequest, ListItemsQuery } from '../types/item.js';
+import { ExamItem, CreateItemRequest, UpdateItemRequest, ListItemsQuery } from '../types/item/item.js';
 import { ItemStorage } from './interface.js';
 
 export class MemoryStorage implements ItemStorage {

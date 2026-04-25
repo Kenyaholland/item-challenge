@@ -1,11 +1,12 @@
 /**
- * Example Handler
- *
- * This demonstrates how to create a handler for the API.
- * You can use this as a template for implementing the required endpoints.
+ * Items Handlers
+ * 
+ * Constains the handlers for item-related operations, such as creating, retrieving, updating, and listing items. 
+ * Each handler interacts with the storage layer to perform the necessary operations and returns appropriate HTTP responses.
  */
 
 import { createStorage } from '../storage/index.js';
+import { ExamItemSchema } from '../types/item/item.schema.js';
 
 const storage = createStorage();
 
@@ -35,8 +36,17 @@ export async function getItemHandler(id: string) {
 
 export async function createItemHandler(data: any) {
   try {
-    // TODO: Add validation using Zod
-    const item = await storage.createItem(data);
+    
+    // Add validation using Zod
+    const validatedData = ExamItemSchema.parse(data);
+    if (!validatedData) {
+      return {
+        statusCode: 400,
+        body: { error: 'Invalid item data' },
+      };
+    }
+
+    const item = await storage.createItem(validatedData);
 
     return {
       statusCode: 201,
@@ -54,5 +64,7 @@ export async function createItemHandler(data: any) {
 // TODO: Implement other handlers:
 // - updateItemHandler
 // - listItemsHandler
+
+// TODO: Implement versioning and audit trail handlers in separate files:
 // - createVersionHandler
 // - getAuditTrailHandler

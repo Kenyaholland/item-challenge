@@ -5,7 +5,7 @@
  * Implement this interface for different storage backends (in-memory, DynamoDB, etc.)
  */
 
-import { ExamItem, CreateItemRequest, UpdateItemRequest, ListItemsQuery } from '../types/item.js';
+import { ExamItem, CreateItemRequest, UpdateItemRequest, ListItemsQuery } from '../types/item/item.js';
 
 export interface ItemStorage {
   createItem(data: CreateItemRequest): Promise<ExamItem>;
