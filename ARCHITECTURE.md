@@ -146,7 +146,7 @@ CDK vs Terraform:
     - Went with an in the middle, moved item.ts into types/item/ folder. Added schema file there. That way a general "validators" file doesnt exist that could contain all kinds of validators. Instead the schema lives next to item.ts but is still in its own file for separation. 
 ### Handlers:
 Separate by resposibility:
-    - items.ts will contain CRUD operations for items (get, create, update, list)
-    - versions.ts will contain createVersionHandler and version management related things
-    - audit.ts will contain getAuditTrailHandler and audit related things
-    - Note: This is not implemented, storage is instantiated within handler file and I did not want to modify code outside of the assignment to implement singleton pattern
+- items.ts will contain CRUD operations for items (get, create, update, list)
+- versions.ts will contain createVersionHandler and version management related things
+- audit.ts will contain getAuditTrailHandler and audit related things
+- Note: This is not implemented, storage is instantiated within handler file and I did not want to modify code outside of the assignment to implement singleton pattern
