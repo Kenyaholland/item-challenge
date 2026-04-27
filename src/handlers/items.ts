@@ -6,7 +6,7 @@
  */
 
 import { createStorage } from '../storage/index.js';
-import { ExamItemSchema } from '../types/item/item.schema.js';
+import { ExamItemSchema, UpdateExamItemSchema } from '../types/item/item.schema.js';
 
 const storage = createStorage();
 
@@ -43,6 +43,7 @@ export async function createItemHandler(data: any) {
       return {
         statusCode: 400,
         body: { error: 'Invalid item data' }, // TODO find a way to show exactly what is causing the error https://zod.dev/error-customization
+        details: validatedData.error.flatten(),
       };
     }
 
@@ -61,10 +62,84 @@ export async function createItemHandler(data: any) {
   }
 }
 
+export async function updateItemHandler(id: string, data: any) {
+  try {
+    if (!id) {
+      return {
+        statusCode: 400,
+        body: { error: "Missing item id" },
+      };
+    }
+
+    const validatedData = UpdateExamItemSchema.safeParse(data);
+
+    if (!validatedData.success) {
+      return {
+        statusCode: 400,
+        body: { error: "Invalid update data" },
+        details: validatedData.error.flatten(),
+      };
+    }
+
+    const updatedItem = await storage.updateItem(id, validatedData.data);
+
+    if (!updatedItem) {
+      return {
+        statusCode: 404,
+        body: { error: "Item not found" },
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: updatedItem,
+    };
+  } catch (error) {
+    console.error("Error updating item:", error);
+
+    return {
+      statusCode: 500,
+      body: { error: "Internal server error" },
+    };
+  }
+}
+export async function createVersionHandler(id: string) {
+  try {
+    if (!id) {
+      return {
+        statusCode: 400,
+        body: { error: "Missing item id" },
+      };
+    }
+
+    const newVersion = await storage.createVersion(id);
+
+    if (!newVersion) {
+      return {
+        statusCode: 404,
+        body: { error: "Item not found" },
+      };
+    }
+
+    return {
+      statusCode: 201,
+      body: newVersion,
+    };
+
+  } catch (error) {
+    console.error("Error creating version:", error);
+
+    return {
+      statusCode: 500,
+      body: { error: "Internal server error" },
+    };
+  }
+}
+
 // TODO: Implement other handlers:
-// - updateItemHandler
 // - listItemsHandler
 
-// TODO: Implement versioning and audit trail handlers in separate files:
+// TODO: Ideally Implement versioning and audit trail handlers in their own files:
+// Storage creation is not singleton
 // - createVersionHandler
 // - getAuditTrailHandler

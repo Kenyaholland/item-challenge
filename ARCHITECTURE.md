@@ -133,7 +133,7 @@ CDK vs Terraform:
 
 ## Trade-offs
 - My goal was a vertical slice implementation so I could touch all the aspects of this assignment. Also focused more time on the things that I knew less.
-    - Didnt imnplement all handlers
+    - Didnt imnplement all handlers or get to some zod improvements
     - Didnt get to implementing all api endpoint Lambda functions in Terraform, only has a single shared Lambda for GET and POST to /items.
 
 ## Extra notes and research:
@@ -149,3 +149,4 @@ CDK vs Terraform:
         - items.ts will contain CRUD operations for items (get, create, update, list)
         - versions.ts will contain createVersionHandler and version management related things
         - audit.ts will contain getAuditTrailHandler and audit related things
+        - Note: This is not implemented, storage is instantiated within handler file and I did not want to modify code outside of the assignment to implement singleton pattern

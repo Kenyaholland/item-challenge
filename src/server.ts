@@ -6,7 +6,7 @@
  */
 
 import { createServer, IncomingMessage, ServerResponse } from 'http';
-import { getItemHandler, createItemHandler } from './handlers/items.js';
+import { getItemHandler, createItemHandler, updateItemHandler, createVersionHandler } from './handlers/items.js';
 
 const PORT = process.env.PORT || 3000;
 
@@ -41,6 +41,13 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse) {
       result = await getItemHandler('test');
     } else if (method === 'POST' && url === '/api/items') {
       result = await createItemHandler(parsedBody);
+    } else if (method === 'PUT' && url?.startsWith('/api/items/')) {
+      const id = url.split('/')[3]; // /api/items/:id
+      result = await updateItemHandler(id, parsedBody);
+    } else if (method === 'POST' && url?.startsWith('/api/items/') && url?.endsWith('/versions')) {
+      const parts = url.split('/');
+      const id = parts[3]; // /api/items/:id/versions
+      result = await createVersionHandler(id);
     } else if (method === 'GET' && url?.startsWith('/api/items/')) {
       const id = url.split('/').pop();
       result = await getItemHandler(id!);

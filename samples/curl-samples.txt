@@ -1,0 +1,39 @@
+CREATE ITEM
+curl -X POST http://localhost:3000/api/items \
+  -H "Content-Type: application/json" \
+  -d '{
+    "subject": "AP Biology",
+    "itemType": "multiple-choice",
+    "difficulty": 3,
+    "content": {
+      "question": "What is photosynthesis?",
+      "options": ["A", "B", "C", "D"],
+      "correctAnswer": "A",
+      "explanation": "Photosynthesis is..."
+    },
+    "metadata": {
+      "author": "test-author",
+      "status": "draft",
+      "tags": ["biology", "photosynthesis"]
+    },
+    "securityLevel": "standard"
+  }'
+
+UPDATE ITEM
+curl -X PUT http://localhost:3000/api/items/<item-id> \
+  -H "Content-Type: application/json" \
+  -d '{
+    "subject": "AP Biology - Updated",
+    "difficulty": 4,
+    "content": {
+      "question": "What is photosynthesis and why is it important?"
+    },
+    "metadata": {
+      "status": "review",
+      "tags": ["biology", "photosynthesis", "plant-biology"]
+    }
+  }'
+
+CREATE VERSION
+curl -X POST http://localhost:3000/api/items/<item-id>/versions \
+  -H "Content-Type: application/json"
