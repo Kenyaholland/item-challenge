@@ -101,6 +101,7 @@ resource "aws_lambda_permission" "apigw" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
 resource "aws_dynamodb_table" "exam_items" {
   name = var.table_name
+  billing_mode = "PAY_PER_REQUEST"
 
   # Primary key used for GetItem queries
   hash_key = "id"
